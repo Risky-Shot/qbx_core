@@ -8,7 +8,7 @@ return {
         moneyTypes = { cash = 500, bank = 5000, crypto = 0 }, -- type = startamount - Add or remove money types for your server (for ex. blackmoney = 0), remember once added it will not be removed from the database!
         dontAllowMinus = { 'cash', 'crypto' }, -- Money that is not allowed going in minus
         paycheckTimeout = 10, -- The time in minutes that it will give the paycheck
-        paycheckSociety = false -- If true paycheck will come from the society account that the player is employed at
+        paycheckSociety = true -- If true paycheck will come from the society account that the player is employed at
     },
 
     player = {
@@ -60,9 +60,9 @@ return {
     ---@alias ColumnName string
     ---@type [TableName, ColumnName][]
     characterDataTables = {
-        {'properties', 'owner'},
+        --{'properties', 'owner'},
         {'bank_accounts_new', 'id'},
-        {'playerskins', 'citizenid'},
+        --{'playerskins', 'citizenid'},
         {'player_mails', 'citizenid'},
         {'player_outfits', 'citizenid'},
         {'player_vehicles', 'citizenid'},
@@ -86,7 +86,7 @@ return {
         whitelist = false, -- Enable or disable whitelist on the server
         whitelistPermission = 'admin', -- Permission that's able to enter the server when the whitelist is on
         discord = '', -- Discord invite link
-        checkDuplicateLicense = true, -- Check for duplicate rockstar license on join
+        checkDuplicateLicense = false, -- Check for duplicate rockstar license on join
         ---@deprecated use cfg ACE system instead
         permissions = { 'god', 'admin', 'mod' }, -- Add as many groups as you want here after creating them in your server.cfg
     },
@@ -96,7 +96,7 @@ return {
             ['license2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'] = 5,
         },
 
-        defaultNumberOfCharacters = 3, -- Define maximum amount of default characters (maximum 3 characters defined by default)
+        defaultNumberOfCharacters = 10, -- Define maximum amount of default characters (maximum 3 characters defined by default)
     },
 
     -- this configuration is for core events only. putting other webhooks here will have no effect
@@ -116,18 +116,33 @@ return {
     end,
 
     getSocietyAccount = function(accountName)
-        return exports['Renewed-Banking']:getAccountMoney(accountName)
+        local account = exports.ox_banking:GetGroupAccount(accountName)
+
+        if not account then return nil end
+
+        local balance = exports.ox_banking:GetMetadata(account.accountId, 'balance')
+
+        return balance
     end,
 
     removeSocietyMoney = function(accountName, payment)
-        return exports['Renewed-Banking']:removeAccountMoney(accountName, payment)
+        local account = exports.ox_banking:GetGroupAccount(accountName)
+
+        assert(account, 'Failed to Get Account for removeSocietyMoney')
+
+        return exports.ox_banking:RemoveBalance(account.accountId, payment, 'Paycheck')
     end,
 
     ---Paycheck function
     ---@param player Player Player object
     ---@param payment number Payment amount
     sendPaycheck = function (player, payment)
-        player.Functions.AddMoney('bank', payment)
+        local account = exports.ox_banking:GetCharacterAccount(player.PlayerData.citizenid)
+
+        assert(account, 'Failed to Get Account for sendPaycheck')
+
+        exports.ox_banking:AddBalance(account.accountId, payment, 'Paycheck')
+
         Notify(player.PlayerData.source, locale('info.received_paycheck', payment))
     end,
 }

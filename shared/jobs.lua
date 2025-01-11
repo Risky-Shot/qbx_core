@@ -17,6 +17,7 @@ return {
         type = 'leo',
 		defaultDuty = true,
 		offDutyPay = false,
+        hasAccount = true,
 		grades = {
             [0] = {
                 name = 'Recruit',
@@ -28,16 +29,18 @@ return {
             },
 			[2] = {
                 name = 'Sergeant',
-                payment = 100
+                payment = 100,
+                bankAuth = 'contributor'
             },
 			[3] = {
                 name = 'Lieutenant',
-                payment = 125
+                payment = 125,
+                bankAuth = 'manager'
             },
 			[4] = {
                 name = 'Chief',
                 isboss = true,
-                bankAuth = true,
+                bankAuth = 'manager',
                 payment = 150
             },
         },
@@ -67,7 +70,7 @@ return {
 			[4] = {
                 name = 'Chief',
                 isboss = true,
-                bankAuth = true,
+                bankAuth = 'manager',
                 payment = 150
             },
         },
@@ -97,7 +100,7 @@ return {
 			[4] = {
                 name = 'Chief',
                 isboss = true,
-                bankAuth = true,
+                bankAuth = 'manager',
                 payment = 150
             },
         },
@@ -127,7 +130,7 @@ return {
 			[4] = {
                 name = 'Chief',
                 isboss = true,
-                bankAuth = true,
+                bankAuth = 'manager',
                 payment = 150
             },
         },
@@ -157,7 +160,7 @@ return {
 			[4] = {
                 name = 'Manager',
                 isboss = true,
-                bankAuth = true,
+                bankAuth = 'manager',
                 payment = 150
             },
         },
@@ -186,7 +189,7 @@ return {
 			[4] = {
                 name = 'Manager',
                 isboss = true,
-                bankAuth = true,
+                bankAuth = 'manager',
                 payment = 150
             },
         },
@@ -226,7 +229,7 @@ return {
 			[4] = {
                 name = 'Manager',
                 isboss = true,
-                bankAuth = true,
+                bankAuth = 'manager',
                 payment = 150
             },
         },
@@ -256,7 +259,7 @@ return {
 			[4] = {
                 name = 'Manager',
                 isboss = true,
-                bankAuth = true,
+                bankAuth = 'manager',
                 payment = 150
             },
         },
@@ -265,6 +268,7 @@ return {
 		label = 'Honorary',
 		defaultDuty = true,
 		offDutyPay = false,
+        hasAccount = true,
 		grades = {
             [0] = {
                 name = 'Judge',

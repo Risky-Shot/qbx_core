@@ -24,7 +24,7 @@ return {
 			[3] = {
                 name = 'Boss',
                 isboss = true,
-                bankAuth = true
+                bankAuth = 'manager'
             },
         },
 	},
@@ -43,7 +43,7 @@ return {
 			[3] = {
                 name = 'Boss',
                 isboss = true,
-                bankAuth = true
+                bankAuth = 'manager'
             },
         },
 	},
@@ -62,7 +62,7 @@ return {
 			[3] = {
                 name = 'Boss',
                 isboss = true,
-                bankAuth = true
+                bankAuth = 'manager'
             },
         },
 	},
@@ -81,7 +81,7 @@ return {
 			[3] = {
                 name = 'Boss',
                 isboss = true,
-                bankAuth = true
+                bankAuth = 'manager'
             },
         },
 	},
@@ -100,7 +100,7 @@ return {
 			[3] = {
                 name = 'Boss',
                 isboss = true,
-                bankAuth = true
+                bankAuth = 'manager'
             },
         },
 	},
@@ -119,7 +119,7 @@ return {
 			[3] = {
                 name = 'Boss',
                 isboss = true,
-                bankAuth = true
+                bankAuth = 'manager'
             },
         },
 	}

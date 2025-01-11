@@ -62,9 +62,27 @@ lib.callback.register('qbx_core:server:createCharacter', function(source, data)
     if not success then return end
 
     giveStarterItems(source)
+
     if GetResourceState('qbx_spawn') == 'missing' then
         SetPlayerBucket(source, 0)
     end
+
+    local player = exports.qbx_core:GetPlayer(source)
+
+    if not player then return end
+
+    local citizenid = player.PlayerData.citizenid
+
+    local account = exports.ox_banking:CreateAccount(citizenid, "Personal", true)
+
+    if not account then 
+        lib.print.info('Failed to Create Bank Account. Please contact staff to fix this issue.')
+        return 
+    end
+
+    local STARTER_AMOUNT = 1000 -- Starter Balance of Player default account
+
+    account:addBalance(STARTER_AMOUNT, 'State Welfare')
 
     lib.print.info(('%s has created a character'):format(GetPlayerName(source)))
     return newData

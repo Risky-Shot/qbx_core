@@ -488,8 +488,17 @@ function CheckPlayerData(source, playerData)
     }
     playerData.metadata.licences = playerData.metadata.licences or {
         id = true,
-        driver = true,
+        drive_theory = false,
+        drive_car = false,
+        drive_bike = false,
+        drive_truck = false,
         weapon = false,
+    }
+    playerData.metadata.licencesTries = playerData.metadata.licencesTries or {
+        drive_theory = 0,
+        drive_car = 0,
+        drive_bike = 0,
+        drive_truck = 0,
     }
     playerData.metadata.inside = playerData.metadata.inside or {
         house = nil,
@@ -737,6 +746,18 @@ function CreatePlayer(playerData, Offline)
         amount = qbx.math.round(tonumber(amount) --[[@as number]])
         if amount < 0 then return false end
         if not self.PlayerData.money[moneytype] then return false end
+        if moneytype == "bank" then
+            local account = exports.ox_banking:GetCharacterAccount(self.PlayerData.citizenid)
+            if not account then return false end
+
+            local accountID = account.accountId
+            local response = exports.ox_banking:AddBalance(accountID, amount, reason or "Unknown")
+
+            if not response.success then
+                return false
+            end
+        end
+
         self.PlayerData.money[moneytype] = self.PlayerData.money[moneytype] + amount
 
         if not self.Offline then
@@ -774,6 +795,19 @@ function CreatePlayer(playerData, Offline)
                 end
             end
         end
+
+        if moneytype == "bank" then
+            local account = exports.ox_banking:GetCharacterAccount(self.PlayerData.citizenid)
+            if not account then return false end
+
+            local accountID = account.accountId
+            local response = exports.ox_banking:RemoveBalance(accountID, amount, reason or "Unknown")
+
+            if not response.success then
+                return false
+            end
+        end
+
         self.PlayerData.money[moneytype] = self.PlayerData.money[moneytype] - amount
 
         if not self.Offline then
@@ -804,7 +838,9 @@ function CreatePlayer(playerData, Offline)
         amount = qbx.math.round(tonumber(amount) --[[@as number]])
         if amount < 0 then return false end
         if not self.PlayerData.money[moneytype] then return false end
+
         local difference = amount - self.PlayerData.money[moneytype]
+
         self.PlayerData.money[moneytype] = amount
 
         if not self.Offline then
